@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">listApp</string>
+    <string name="add">Add</string>
+    <string name="add_textInput">add to list</string>
+</resources>

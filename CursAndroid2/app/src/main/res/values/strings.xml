@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CursAndroid2</string>
+    <string name="accept">accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="contrasenya">Password</string>
+    <string name="telefon">Phone</string>
+    <string name="correo">Email</string>
+    <string name="name">Nom</string>
+    <string name="btn_no">NO</string>
+    <string name="preguntaCancelar">Vols borrar les dades?</string>
+    <string name="aceptar">Acceptar</string>
+
+</resources>
