@@ -15,14 +15,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-
     ArrayList<Task> dataSet;
-
     RecyclerView recyclerView;
-
     TaskAdapter taskAdapter;
+    EditText etTask, etMarca;
 
-    EditText editText;
+
     RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -33,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
         dataSet=new ArrayList<>();
 
         recyclerView=findViewById(R.id.list);
-        editText=findViewById(R.id.addToList);
+        etTask=findViewById(R.id.addToList);
+        etMarca=findViewById(R.id.addToListMarca);
 
 
         layoutManager=new LinearLayoutManager(this);
@@ -55,15 +54,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void createDummyContent(){
-        dataSet.add(new Task("Task 1"));
-        dataSet.add(new Task("Task 2"));
+        dataSet.add(new Task("Task 1","Mercedes"));
+        dataSet.add(new Task("Task 2", "Seat"));
     }
 
     public void addTask(View View){
-        String text= editText.getText().toString();
-        dataSet.add(new Task(text));
+        String text= etTask.getText().toString();
+        String marca = etMarca.getText().toString();
+        dataSet.add(new Task(text,marca));
         taskAdapter.notifyDataSetChanged();
-        editText.setText("");
+        etTask.setText("");
+        etMarca.setText("");
     }
 
 //GUARDA L'estat actual de les dadesque necessiteem
@@ -71,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelableArrayList("dataSet",dataSet);
-        outState.putString("taskText", editText.getText().toString());
+        outState.putString("taskText", etTask.getText().toString());
+        outState.putString("marca",etMarca.getText().toString());
+
         super.onSaveInstanceState(outState);
     }
 
@@ -80,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         dataSet=savedInstanceState.getParcelableArrayList("dataSet");
-        editText.setText(savedInstanceState.getString("taskText"));
+        etTask.setText(savedInstanceState.getString("taskText"));
+        etMarca.setText(savedInstanceState.getString("marca"));
+
         taskAdapter=new TaskAdapter(dataSet);
         recyclerView.setAdapter(taskAdapter);
     }

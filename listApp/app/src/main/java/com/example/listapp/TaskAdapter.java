@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         holder.tvId.setText(String.valueOf(t.getId()));
         holder.tvTask.setText(t.getTask());
+        holder.tvMarca.setText(t.getMarca());
 
     }
 
@@ -46,18 +48,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-
-        TextView tvId,tvTask;
+        TextView tvId,tvTask,tvMarca;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
             tvId=itemView.findViewById(R.id.tvId);
             tvTask=itemView.findViewById(R.id.tvTask);
-
+            tvMarca=itemView.findViewById(R.id.tvMarca);
         }
-
-
-
     }
 
 

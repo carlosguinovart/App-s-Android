@@ -14,6 +14,13 @@
         android:ems="10"
         android:hint="@string/add_textInput"
         android:inputType="textPersonName" />
+    <EditText
+        android:id="@+id/addToListMarca"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="add Marca"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/button"
