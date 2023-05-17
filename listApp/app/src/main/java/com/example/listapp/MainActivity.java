@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
             createDummyContent();
             taskAdapter =new TaskAdapter(dataSet);
             recyclerView.setAdapter(taskAdapter);
-
         }
 
         taskAdapter=new TaskAdapter(dataSet);
@@ -67,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         etMarca.setText("");
     }
 
-//GUARDA L'estat actual de les dadesque necessiteem
+//GUARDA L'estat actual de les dades que necessiteem
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
