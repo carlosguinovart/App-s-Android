@@ -19,10 +19,10 @@ public class SegonaActivity extends AppCompatActivity {
         prefs = getSharedPreferences(getString(R.string.shared_file), MODE_PRIVATE);
 
         int contador = prefs.getInt("contador", 0);
-        contador ++;
+        contador++;
 
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("Contador", contador);
+        editor.putInt("contador", contador);
         editor.commit();
 
 

@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +27,6 @@ public class MainActivity extends AppCompatActivity {
         String guardat = sharedPreferences.getString("textGuardat", "");
 
         etShared.setText(guardat);
-        int contador = 0;
-
-        Toast.makeText(this, contador, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -37,15 +36,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("textGuardat",text);
         editor.commit();
-
-
     }
 
     public void openClicked(View view) {
 
         Intent intent = new Intent(this, SegonaActivity.class);
         startActivity(intent);
+    }
 
+    public void showContador(View view) {
 
+        int contador = sharedPreferences.getInt("contador", 0);
+        Toast.makeText(this, String.valueOf(contador), Toast.LENGTH_SHORT).show();
     }
 }
