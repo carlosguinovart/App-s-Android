@@ -10,13 +10,13 @@ import androidx.annotation.NonNull;
 public class Task implements Parcelable {
     private int id;
     private String task;
-    private String marca;
+   // private String marca;
 
 
-    public Task(String task, String marca) {
+    public Task(String task) {
         this.id=new Random().nextInt(99999);
         this.task = task;
-        this.marca = marca;
+        //this.marca = marca;
     }
     public Task(Parcel in) {
         super();
@@ -50,13 +50,13 @@ public class Task implements Parcelable {
         this.task = task;
     }
 
-    public String getMarca() {
-        return marca;
-    }
+   // public String getMarca() {
+       // return marca;
+   // }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
+   // public void setMarca(String marca) {
+        //this.marca = marca;
+   // }
 
     @Override
     public int describeContents() {
@@ -67,13 +67,13 @@ public class Task implements Parcelable {
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(task);
-        parcel.writeString(marca);
+        //parcel.writeString(marca);
     }
 
     public void readFromParcel(Parcel in){
         id=in.readInt();
         task=in.readString();
-        marca=in.readString();
+       // marca=in.readString();
     }
 
 

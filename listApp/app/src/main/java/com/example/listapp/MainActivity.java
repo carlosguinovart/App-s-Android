@@ -1,73 +1,50 @@
 package com.example.listapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import android.content.res.Configuration;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 
-import java.util.ArrayList;
+public class MainActivity extends AppCompatActivity implements TaskAdapter.OnItemClickListener {
 
-public class MainActivity extends AppCompatActivity {
-
-    ArrayList<Task> dataSet;
-    RecyclerView recyclerView;
-    TaskAdapter taskAdapter;
-    EditText etTask, etMarca;
-
-
-    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataSet=new ArrayList<>();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ListFragment listFragment = ListFragment.newInstance();
+        ft.add(R.id.list_fragment, listFragment);
+        ft.commit();
 
-        recyclerView=findViewById(R.id.list);
-        etTask=findViewById(R.id.addToList);
-        etMarca=findViewById(R.id.addToListMarca);
+    }
 
+    @Override
+    public void onItemClick(View view, int position, String task) {
+        Log.v("CArlos",task);
+        showDetail(task);
 
-        layoutManager=new LinearLayoutManager(this);
-        // RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
-        // RecyclerView.LayoutManager layoutManager=new GridLayoutManager(this,2);
-
-        recyclerView.setLayoutManager(layoutManager);
-
-        if(savedInstanceState==null){
-            createDummyContent();
-            taskAdapter =new TaskAdapter(dataSet);
-            recyclerView.setAdapter(taskAdapter);
-        }
-
-        taskAdapter=new TaskAdapter(dataSet);
-        recyclerView.setAdapter(taskAdapter);
     }
 
 
-    private void createDummyContent(){
-        dataSet.add(new Task("Task 1","Mercedes"));
-        dataSet.add(new Task("Task 2", "Seat"));
+    public void showDetail(String task){
+        DetailFragment detailFragment = DetailFragment.newInstance(task);
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.list_fragment, detailFragment);
+        ft.commit();
     }
 
-    public void addTask(View View){
-        String text= etTask.getText().toString();
-        String marca = etMarca.getText().toString();
-        dataSet.add(new Task(text,marca));
-        taskAdapter.notifyDataSetChanged();
-        etTask.setText("");
-        etMarca.setText("");
-    }
 
 //GUARDA L'estat actual de les dades que necessiteem
-
+/*
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelableArrayList("dataSet",dataSet);
@@ -100,4 +77,6 @@ public class MainActivity extends AppCompatActivity {
        }
        recyclerView.setLayoutManager(layoutManager);
     }
+    */
+
 }
