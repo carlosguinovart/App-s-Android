@@ -1,15 +1,20 @@
 package com.example.listapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.OnItemClickListener {
+
+
+    ListFragment listFragment;
 
 
     @Override
@@ -19,9 +24,25 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnIte
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ListFragment listFragment = ListFragment.newInstance();
+
+        Fragment retainedFragment= fm.findFragmentById(R.id.list_fragment);
+        if(retainedFragment==null){//crea el primer cop
+            listFragment=ListFragment.newInstance();//Init un cop.
+            ft.add(R.id.list_fragment,listFragment);
+        }else{//aprofita les seguents
+            listFragment=(ListFragment) retainedFragment;
+            ft.replace(R.id.list_fragment,listFragment);
+        }
+
+        listFragment = ListFragment.newInstance();// Init un cop
+
         ft.add(R.id.list_fragment, listFragment);
         ft.commit();
+
+
+
+
+
 
     }
 
@@ -29,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnIte
     public void onItemClick(View view, int position, String task) {
         Log.v("CArlos",task);
         showDetail(task);
-
     }
 
 
@@ -38,8 +58,24 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.OnIte
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.list_fragment, detailFragment);
+
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE){
+            ft.replace(R.id.detail_fragment,detailFragment);
+        }else{
+            ft.replace(R.id.list_fragment, detailFragment);
+        }
+
         ft.commit();
+    }
+
+    public void showList(){
+        //ListFragment fragment = ListFragment.newInstance();
+        FragmentManager fm= getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.list_fragment, listFragment);
+        ft.commit();
+
     }
 
 
