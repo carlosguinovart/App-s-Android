@@ -4,9 +4,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,11 +28,13 @@ public class ListFragment extends Fragment {
     RecyclerView recyclerView;
     TaskAdapter taskAdapter;
     EditText etTask, etMarca;
-    ArrayList<Task> dataSet;
+    // ArrayList<Task> dataSet;
     RecyclerView.LayoutManager layoutManager;
 
+    ListViewModel nViewModel;
+
     Button button;
-    String editText_text ="";
+    String editText_text = "";
     EditText editText;
 
 
@@ -61,9 +66,13 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState!=null){
-            dataSet=savedInstanceState.getParcelableArrayList("dataSet");
-            editText_text=savedInstanceState.getString("taslText");
+        //init del viewModel
+        if (nViewModel == null) {
+            nViewModel = new ViewModelProvider(this).get(ListViewModel.class);
+        }
+        if (savedInstanceState != null) {
+            //dataSet=savedInstanceState.getParcelableArrayList("dataSet");
+            editText_text = savedInstanceState.getString("taslText");
         }
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -78,21 +87,20 @@ public class ListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         //mirar si ja te dades
-        if (dataSet == null) {
-            dataSet = new ArrayList<>();
-            createDummyContent();
+        if (nViewModel.getDataSet() == null) {
+            nViewModel.init();
         }
         recyclerView = view.findViewById(R.id.list);
         etTask = view.findViewById(R.id.addToList);
         button = view.findViewById(R.id.button);
         //editText=view.findViewById(R.id.etTask);
-        if(!"".equals(editText_text)){
+        if (!"".equals(editText_text)) {
             etTask.setText(editText_text);
         }
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        taskAdapter = new TaskAdapter(dataSet);
+        taskAdapter = new TaskAdapter(nViewModel.getDataSet());
         recyclerView.setAdapter(taskAdapter);
 
         taskAdapter.setClickListener((TaskAdapter.OnItemClickListener) getActivity());
@@ -101,10 +109,17 @@ public class ListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String text = etTask.getText().toString();
-                dataSet.add(new Task(text));
+                nViewModel.getDataSet().add(new Task(text));
+                nViewModel.refreshObservable();
                 taskAdapter.notifyDataSetChanged();
                 etTask.setText("");
 
+            }
+        });
+        nViewModel.getDataSetObservable().observe(getActivity(), new Observer<ArrayList<Task>>() {
+            @Override
+            public void onChanged(ArrayList<Task> tasks) {
+                Log.v("Carlos", "changes");
             }
         });
         return view;
@@ -112,21 +127,17 @@ public class ListFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelableArrayList("dataSet",dataSet);
+        outState.putParcelableArrayList("dataSet", nViewModel.getDataSet());
         outState.putString("taskText", etTask.getText().toString());
 
         super.onSaveInstanceState(outState);
     }
 
-    private void createDummyContent() {
-        dataSet.add(new Task("Task 1"));
-        dataSet.add(new Task("Task 2"));
-    }
 
     public void addTask(View View) {
         String text = etTask.getText().toString();
 
-        dataSet.add(new Task(text));
+        nViewModel.getDataSet().add(new Task(text));
         taskAdapter.notifyDataSetChanged();
         etTask.setText("");
 

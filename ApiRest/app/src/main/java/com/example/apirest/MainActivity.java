@@ -30,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
     TextView textView;
     ImageView imageView;
-    String url ="https://jsonplaceholder.typicode.com/users/";
+    String url = "https://jsonplaceholder.typicode.com/users/";
     RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,25 +45,24 @@ public class MainActivity extends AppCompatActivity {
 //inicialitzar la queue
         queue = Volley.newRequestQueue(getApplicationContext());
 
-;    }
+        ;
+    }
 
 
     public void checkConect(View view) {
-
-        if(isConnected()){
+        if (isConnected()) {
             textView.setText(R.string.ok);
-        }else{
+        } else {
             textView.setText(R.string.error);
         }
     }
 
 
-    public boolean isConnected(){
-        ConnectivityManager connMgr= (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+    public boolean isConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
 
-        NetworkInfo netInfo= connMgr.getActiveNetworkInfo();
-
-        if(netInfo!=null && netInfo.isConnected()){
+        if (netInfo != null && netInfo.isConnected()) {
             return true;
         }
         return false;
@@ -77,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
                 String resultado = "";
 
                 try {
-                    JSONArray jsonArray= new JSONArray(response);
-                    for(int i =0 ; i<jsonArray.length();i++){
+                    JSONArray jsonArray = new JSONArray(response);
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        resultado += jsonObject.getString("name")+ "\n";
+                        resultado += jsonObject.getString("name") + "\n";
                     }
                     textView.setText(resultado);
                 } catch (JSONException e) {
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void jsonClicked(View view) {
-        String new_url=url+"/1";
+        String new_url = url + "/1";
 
-        JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.GET, new_url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, new_url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -112,23 +112,22 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v("test",error.getMessage());
+                Log.v("test", error.getMessage());
             }
         });
         queue.add(jsonObjectRequest);
     }
 
     public void arrayClicked(View view) {
-
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                String resultado="";
+                String resultado = "";
                 try {
-                    for (int i = 0; i<response.length();i++){
+                    for (int i = 0; i < response.length(); i++) {
                         resultado += response.getJSONObject(i).getString("name");
                     }
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     throw new RuntimeException();
                 }
                 textView.setText(resultado);
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v("test",error.getMessage());
+                Log.v("test", error.getMessage());
             }
         });
         queue.add(jsonArrayRequest);
@@ -146,14 +145,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void jsonClickedGson(View view) {
-        String new_url=url+"/1";
-        JsonObjectRequest jsonObjectRequest =new JsonObjectRequest(Request.Method.GET, new_url, null, new Response.Listener<JSONObject>() {
+        String new_url = url + "/1";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, new_url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     textView.setText(response.getString("name"));
 
-                    Gson gson= new Gson();
+                    Gson gson = new Gson();
 
                     //conversio directa a un objacte tipus User ;
                     User u = gson.fromJson(response.toString(), User.class);
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v("test",error.getMessage());
+                Log.v("test", error.getMessage());
             }
         });
         queue.add(jsonObjectRequest);
@@ -174,23 +173,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void arrayClickedGson(View view) {
-
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                String resultado="";
+                String resultado = "";
                 try {
-                    for (int i = 0; i<response.length();i++){
+                    for (int i = 0; i < response.length(); i++) {
                         resultado += response.getJSONObject(i).getString("name");
                     }
 
                     Gson gson = new Gson();
-                    User[] userArray= gson.fromJson(response.toString(), User[].class);
-                    for (User  user : userArray){
+                    User[] userArray = gson.fromJson(response.toString(), User[].class);
+                    for (User user : userArray) {
                         Log.v("Array", user.getName());
                     }
 
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     throw new RuntimeException();
                 }
                 textView.setText(resultado);
@@ -198,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.v("test",error.getMessage());
+                Log.v("test", error.getMessage());
             }
         });
         queue.add(jsonArrayRequest);
@@ -208,19 +206,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void postClicked(View view) {
         JSONObject newObject = new JSONObject();
-       try{
-
-        newObject.put("name", "carlos");
-        newObject.put("email", "carlos@gmail.com");
-       }catch (JSONException e ){
-           e.printStackTrace();
-       }
-       JsonObjectRequest jsonObjectRequest=new JsonObjectRequest(Request.Method.POST, url, newObject, new Response.Listener<JSONObject>() {
-           @Override
-           public void onResponse(JSONObject response) {
-               Log.v("TEST", "post ok");
-           }
-       },new Response.ErrorListener(){
+        try {
+            newObject.put("name", "carlos");
+            newObject.put("email", "carlos293842347@gmail.com");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, newObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.v("TEST", "post ok");
+            }
+        }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
