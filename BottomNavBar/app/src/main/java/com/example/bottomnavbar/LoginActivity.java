@@ -46,4 +46,28 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    public void loginClick(View view) {
+        String mail = etMail.getText().toString();
+        String password = etPassword.getText().toString();
+
+        firebaseAuth.signInWithEmailAndPassword(mail, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>(){
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if( task.isSuccessful()){
+                    Log.v("carlos", "Login OK");
+                    finish();
+                }else{
+                    Log.v("Carlos", task.getException().getMessage());
+                }
+            }
+        });
+
+    }
+    public void logoutClicked(View view){
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            FirebaseAuth.getInstance().signOut();
+        }
+    }
 }
