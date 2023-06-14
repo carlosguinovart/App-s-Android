@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "410470813771",
+    "project_id": "storagetest-68630",
+    "storage_bucket": "storagetest-68630.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410470813771:android:5928edc4c7c9f1a8547dce",
+        "android_client_info": {
+          "package_name": "com.example.storagetest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410470813771-fk71pt28cef8h2a1mk77q3v7a8l5smnu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6zx4it3u5eLso1xwYx0_BTs0JK4vkxds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410470813771-fk71pt28cef8h2a1mk77q3v7a8l5smnu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
